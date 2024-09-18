@@ -7,7 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace labirinto
 {
-    internal class Maze
+    public class Maze
     {
         public Robot robot;
 

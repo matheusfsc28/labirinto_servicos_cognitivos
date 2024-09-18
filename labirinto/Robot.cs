@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace labirinto
 {
-    internal class Robot
+    public class Robot
     {
         public int battery;
 
