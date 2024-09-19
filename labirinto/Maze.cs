@@ -2,8 +2,6 @@
 {
     public class Maze
     {
-        public Robot robot;
-
         public string mazeTxt;
         public char[,] arrayMaze;
         public int linesLength;
@@ -13,10 +11,9 @@
         public int entranceColumn;
 
 
-        public Maze(string _mazeTxt, Robot _robot)
+        public Maze(string _mazeTxt)
         {
             mazeTxt = _mazeTxt;
-            robot = _robot;
             setArrayMaze();
         }
 

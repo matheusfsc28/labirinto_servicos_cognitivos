@@ -1,12 +1,11 @@
 ﻿namespace labirinto
 {
-    public class Robot
+    public class Robot : Radar
     {
-        public int battery;
+        public int battery = 2;
 
-        public Robot(int _battery = 2) 
+        public Robot(Maze maze) : base(maze)
         { 
-            battery = _battery;
         }
 
         public void DischargeBattery() 
