@@ -7,15 +7,14 @@ namespace labirinto.Tests
         [Fact]
         public void SetArrayMaze_ShouldCorrectlyConfigureArrayMaze()
         {
-            string mazeTxt = "####\n#E #\n####";
-            Robot robot = new Robot(); // Supondo que você tenha uma classe Robot
-            Maze maze = new Maze(mazeTxt, robot);
+            string mazeTxt = "****\n*E *\n****";
+            Maze maze = new Maze(mazeTxt);
 
             char[,] expectedArrayMaze = new char[,]
             {
-            { '#', '#', '#', '#' },
-            { '#', 'E', ' ', '#' },
-            { '#', '#', '#', '#' }
+            { '*', '*', '*', '*' },
+            { '*', 'E', ' ', '*' },
+            { '*', '*', '*', '*' }
             };
 
             Assert.NotNull(maze.arrayMaze);
