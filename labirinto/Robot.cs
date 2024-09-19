@@ -29,7 +29,7 @@
                     return;
                 }
             }
-            throw new Exception("Nenhum humano encontrado para capturar localizado pelos sensores");
+            throw new Exception("Nenhum humano para capturar localizado pelos sensores");
         }
 
         public void DropHuman(int positionRow, int positionColumn)
