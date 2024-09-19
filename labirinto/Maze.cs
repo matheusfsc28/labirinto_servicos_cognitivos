@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace labirinto
+﻿namespace labirinto
 {
     public class Maze
     {
         public Robot robot;
 
         public string mazeTxt;
-        public char[,]? arrayMaze;
+        public char[,] arrayMaze;
         public int linesLength;
         public int columnLength;
 
-        public int? entranceRow;
-        public int? entranceColumn;
+        public int entranceRow;
+        public int entranceColumn;
 
 
         public Maze(string _mazeTxt, Robot _robot)

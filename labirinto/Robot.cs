@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace labirinto
+﻿namespace labirinto
 {
     public class Robot
     {
@@ -19,7 +13,5 @@ namespace labirinto
         {
             battery--;
         }
-
-
     }
 }
