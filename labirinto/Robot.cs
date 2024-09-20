@@ -152,7 +152,7 @@
             for (int i = 0; i < rightMovement.Length; i++)
             {
                 // Gira os 90º graus
-                if (positionRow + rightMovement[i].Item1 < 0 || positionRow + rightMovement[i].Item1 >= _maze.linesLength || positionColumn + rightMovement[i].Item2 < 0 || positionColumn + rightMovement[i].Item2 >= _maze.columnLength) ;
+                if (positionRow + rightMovement[i].Item1 < 0 || positionRow + rightMovement[i].Item1 >= _maze.linesLength || positionColumn + rightMovement[i].Item2 < 0 || positionColumn + rightMovement[i].Item2 >= _maze.columnLength)
                 {
                     compass = rightMovementNames[i];
                     exit = (positionRow + rightMovement[i].Item1, positionColumn + rightMovement[i].Item2);
