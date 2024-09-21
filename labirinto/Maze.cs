@@ -1,4 +1,6 @@
-﻿namespace labirinto
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace labirinto
 {
     public class Maze
     {
@@ -51,16 +53,27 @@
             }
         }
 
-        public void writeMaze()
+        public string returnStringPosition((int,int) position)
         {
-            if (arrayMaze == null) throw new Exception("Labirinto invalido");
-            for (int i = 0; i < linesLength; i++)
+            int linePosition = position.Item1;
+            int columnPosition = position.Item2;
+
+
+            if (linePosition < 0 || linePosition >= linesLength || columnPosition < 0 || columnPosition >= columnLength)
+                    return ("Posicao fora do labirinto");
+
+            switch (arrayMaze[linePosition, columnPosition])
             {
-                for (int j = 0; j < columnLength; j++)
-                {
-                    Console.Write(arrayMaze[i, j]);
-                }
-                Console.WriteLine();
+                case '*':
+                    return "Parede";
+                case ' ':
+                    return "Espaco vazio";
+                case 'H':
+                    return "Humano";
+                case 'E':
+                    return "Saida";
+                default:
+                    return "Erro";
             }
         }
     }

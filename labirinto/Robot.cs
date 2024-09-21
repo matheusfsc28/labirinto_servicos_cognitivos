@@ -2,8 +2,10 @@
 {
     public class Robot : Radar
     {
+        Log _log;
+
         public int battery = 2;
-        public (int, int)[] rightMovement = new (int, int)[]
+        public (int, int)[] movementDirections = new (int, int)[]
         {
         (-1, 0), // UP
         (0, 1),  // Right
@@ -19,9 +21,9 @@
 
         public Robot(Maze maze) : base(maze)
         {
+            _log = new Log();
             SetOrientation(_maze.entranceRow, _maze.entranceColumn);
         }
-
 
 
         public void DischargeBattery()
@@ -29,35 +31,39 @@
             battery--;
         }
 
-        public void CatchHuman(int positionRow, int positionColumn)
-        {
-            for (int i = 0; i < rightMovement.Length; i++)
-            {
-                // Gira os 90º graus
-                var movement = (positionRow + rightMovement[i].Item1, positionColumn + rightMovement[i].Item2);
-                if (Sensor((pathSaved.Last().Item1, pathSaved.Last().Item2), movement)) ;
-                {
-                    DischargeBattery();
-                    return;
-                }
-            }
-            throw new Exception("Nenhum humano para capturar localizado pelos sensores");
-        }
+        //public void CatchHuman(int positionRow, int positionColumn)
+        //{
+        //    for (int i = 0; i < movementDirections.Length; i++)
+        //    {
+        //        // Gira os 90º graus
+        //        var movement = (positionRow + movementDirections[i].Item1, positionColumn + movementDirections[i].Item2);
+        //        if (Sensor((pathSaved.Last().Item1, pathSaved.Last().Item2), movement))
+        //        {
+        //            DischargeBattery();
+        //            //Log.PegarHumano
+        //            return;
+        //        }
 
-        public void DropHuman(int positionRow, int positionColumn)
-        {
-            for (int i = 0; i < rightMovement.Length; i++)
-            {
-                // Gira os 90º graus
-                var movement = (positionRow + rightMovement[i].Item1, positionColumn + rightMovement[i].Item2);
-                if (Sensor((_maze.entranceRow, _maze.entranceColumn), movement));
-                {
-                    DischargeBattery();
-                    return;
-                }
-            }
-            throw new Exception("Caminho de entrada não localizado pelos sensores");
-        }
+
+        //    }
+        //    throw new Exception("Nenhum humano para capturar localizado pelos sensores");
+        //}
+
+        //public void DropHuman(int positionRow, int positionColumn)
+        //{
+        //    for (int i = 0; i < movementDirections.Length; i++)
+        //    {
+        //        // Gira os 90º graus
+        //        var movement = (positionRow + movementDirections[i].Item1, positionColumn + movementDirections[i].Item2);
+        //        if (Sensor((exit.Item1, exit.Item2), movement))
+        //        {
+        //            DischargeBattery();
+        //            //Log.PegarHumano
+        //            return;
+        //        }
+        //    }
+        //    throw new Exception("Caminho de entrada não localizado pelos sensores");
+        //}
 
         public void RescueHuman()
         {
@@ -68,94 +74,130 @@
 
             for (int i = 0; i < pathSaved.Count; i++)
             {
-                if (i == pathSaved.Count - 1) break;
+                if (i == 0) continue;
+                else if (i == pathSaved.Count - 1) break;
 
                 (positionRow, positionColumn) = MoveTo(positionRow, positionColumn, pathSaved[i]);
             }
 
-            // precisa verificar se o homanu está na frente
-            CatchHuman(positionRow, positionColumn);
+            //// precisa verificar se o homanu está na frente
+            //CatchHuman(positionRow, positionColumn);
 
-            for (int i = pathSaved.Count - 1; i > 0; i--)
-            {
-                (positionRow, positionColumn) = MoveTo(positionRow, positionColumn, pathSaved[i]);
+            //for (int i = pathSaved.Count - 1; i > 0; i--)
+            //{
+            //    (positionRow, positionColumn) = MoveTo(positionRow, positionColumn, pathSaved[i]);
 
-                if (i == 0) (positionRow, positionColumn) = MoveTo(positionRow, positionColumn, (_maze.entranceRow, _maze.entranceColumn));
-            }
+            //}
 
-            DropHuman(positionRow, positionColumn);
+            //DropHuman(positionRow, positionColumn);
         }
 
-        public (int, int) MoveTo(int currentRow, int currentColumn, (int, int) localiation)
+        public (int, int) MoveTo(int currentRow, int currentColumn, (int, int) localization)
         {
-            (int, int) movement = (0, 0);
-            int[] indexes;
+            (int, string)[] indexes;
 
-            switch (compass)
-            {
-                case "north":
-                    indexes = [ 0, 1, 3 ];
-                    foreach (int i in indexes)
-                    {
-                        movement = (currentRow + rightMovement[i].Item1, currentColumn + rightMovement[i].Item2);
-                        if (Sensor(localiation, movement)) break;
-                        //Log.TurnRight
-                    }
-                    //Log.Avancar
+            string movementCompass = compass;
+            (int, int) sensorFront = (0, 0);
+            (int, int) sensorRight = (0, 0);
+            (int, int) sensorLeft = (0, 0);
 
-                    break;
-                case "east":
-                    indexes = [1, 2, 0];
-                    foreach (int i in indexes)
-                    {
-                        movement = (currentRow + rightMovement[i].Item1, currentColumn + rightMovement[i].Item2);
-                        if (Sensor(localiation, movement)) break;
-                        //Log.TurnRight
-                    }
-                    //Log.Avancar
+            while (!(CheckFrontSensor(localization, sensorFront)))
+                switch (movementCompass)
+                {
+                    case "north":
+                        indexes = [(0, "north"), (1, "east"), (3, "west")];
 
-                    break;
-                case "south":
-                    indexes = [2, 3, 1];
-                    foreach (int i in indexes)
-                    {
-                        movement = (currentRow + rightMovement[i].Item1, currentColumn + rightMovement[i].Item2);
-                        if (Sensor(localiation, movement)) break;
-                        //Log.TurnRight
-                    }
-                    //Log.Avancar
+                        sensorFront = (currentRow + movementDirections[0].Item1, currentColumn + movementDirections[0].Item2);
+                        sensorRight = (currentRow + movementDirections[1].Item1, currentColumn + movementDirections[1].Item2);
+                        sensorLeft = (currentRow + movementDirections[3].Item1, currentColumn + movementDirections[3].Item2);
 
-                    break;
-                case "west":
-                    indexes = [3, 0, 2];
-                    foreach (int i in indexes)
-                    {
-                        movement = (currentRow + rightMovement[i].Item1, currentColumn + rightMovement[i].Item2);
-                        if (Sensor(localiation, movement)) break;
-                        //Log.TurnRight
-                    }
-                    //Log.Avancar
+                        if (CheckFrontSensor(localization, sensorFront))
+                        {
+                            compass = movementCompass;
+                            _log.WriteToCsv('A', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                        }
+                        else
+                        {
+                            movementCompass = "east";
+                            _log.WriteToCsv('D', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                        }
+                        break;
+                    case "east":
+                        indexes = [(1, "east"), (2, "south"), (0, "north")];
 
-                    break;
-            }
-            return movement;
+                        sensorFront = (currentRow + movementDirections[1].Item1, currentColumn + movementDirections[1].Item2);
+                        sensorRight = (currentRow + movementDirections[2].Item1, currentColumn + movementDirections[2].Item2);
+                        sensorLeft = (currentRow + movementDirections[0].Item1, currentColumn + movementDirections[0].Item2);
+
+                        if (CheckFrontSensor(localization, sensorFront))
+                        {
+                            compass = movementCompass;
+                            _log.WriteToCsv('A', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                        }
+                        else
+                        {
+                            movementCompass = "south";
+                            _log.WriteToCsv('D', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                        }
+                        break;
+                    case "south":
+                        indexes = [(2, "south"), (3, "west"), (1, "east")];
+
+                        sensorFront = (currentRow + movementDirections[2].Item1, currentColumn + movementDirections[2].Item2);
+                        sensorRight = (currentRow + movementDirections[3].Item1, currentColumn + movementDirections[3].Item2);
+                        sensorLeft = (currentRow + movementDirections[1].Item1, currentColumn + movementDirections[1].Item2);
+
+                        if (CheckFrontSensor(localization, sensorFront))
+                        {
+                            compass = movementCompass;
+                            _log.WriteToCsv('A', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                        }
+                        else
+                        {
+                            movementCompass = "west";
+                            _log.WriteToCsv('D', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                        }
+                        break;
+                    case "west":
+                        indexes = [(3, "west"), (0, "north"), (2, "south")];
+
+                        sensorFront = (currentRow + movementDirections[3].Item1, currentColumn + movementDirections[3].Item2);
+                        sensorRight = (currentRow + movementDirections[0].Item1, currentColumn + movementDirections[0].Item2);
+                        sensorLeft = (currentRow + movementDirections[2].Item1, currentColumn + movementDirections[2].Item2);
+
+                        if (CheckFrontSensor(localization, sensorFront))
+                        {
+                            compass = movementCompass;
+                            _log.WriteToCsv('A', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                        }
+                        else
+                        {
+                            movementCompass = "north";
+                            _log.WriteToCsv('D', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                        }
+                        break;
+                }
+            return sensorFront;
         }
 
 
-        public bool Sensor((int, int) localization, (int, int) movement)
+        public bool CheckFrontSensor((int, int) localization, (int, int) movement)
         {
             return localization == movement;
         }
 
         public void SetOrientation(int positionRow, int positionColumn)
         {
-            for (int i = 0; i < rightMovement.Length; i++)
+            for (int i = 0; i < movementDirections.Length; i++)
             {
                 // Gira os 90º graus
-                if (positionRow + rightMovement[i].Item1 < 0 || positionRow + rightMovement[i].Item1 >= _maze.linesLength || positionColumn + rightMovement[i].Item2 < 0 || positionColumn + rightMovement[i].Item2 >= _maze.columnLength)
+                if (positionRow + movementDirections[i].Item1 < 0 ||
+                    positionRow + movementDirections[i].Item1 >= _maze.linesLength ||
+                    positionColumn + movementDirections[i].Item2 < 0 ||
+                    positionColumn + movementDirections[i].Item2 >= _maze.columnLength)
                 {
                     compass = rightMovementNames[i];
-                    exit = (positionRow + rightMovement[i].Item1, positionColumn + rightMovement[i].Item2);
+                    exit = (positionRow + movementDirections[i].Item1, positionColumn + movementDirections[i].Item2);
                 }
             }
         }
