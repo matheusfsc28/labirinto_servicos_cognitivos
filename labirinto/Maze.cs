@@ -5,7 +5,7 @@
         public string mazeTxt;
         public char[,] arrayMaze;
         public int linesLength;
-        public int columnLength;
+        public int columnLength = 0;
 
         public int entranceRow;
         public int entranceColumn;
@@ -22,8 +22,8 @@
             string[] lines = mazeTxt.Split('\n');
 
             foreach (string line in lines)
-            {
-                if (line.Length == 0) continue;
+            { 
+                if (line.Length == 0 || line.Length < columnLength) continue;
 
                 if (linesLength == 0)
                 {
