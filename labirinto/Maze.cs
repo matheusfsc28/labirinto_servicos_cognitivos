@@ -65,16 +65,22 @@ namespace labirinto
             switch (arrayMaze[linePosition, columnPosition])
             {
                 case '*':
-                    return "Parede";
+                    return "PAREDE";
                 case ' ':
-                    return "Espaco vazio";
+                    return "VAZIO";
                 case 'H':
-                    return "Humano";
+                    return "HUMANO";
                 case 'E':
-                    return "Saida";
+                    return "SAIDA";
                 default:
-                    return "Erro";
+                    return "ERROR";
             }
         }
+        
+        public void ReplaceMaze((int, int) position, char character)
+        {
+            arrayMaze[position.Item1, position.Item2] = character;
+        }
+
     }
 }

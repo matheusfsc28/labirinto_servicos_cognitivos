@@ -18,6 +18,9 @@
         };
         public (int, int) exit;
         public string compass;
+        public string actionRobot = "LIGAR";
+        public (int, int) humanPosition;
+        public bool hasHuman = false;
 
         public Robot(Maze maze) : base(maze)
         {
@@ -31,39 +34,145 @@
             battery--;
         }
 
-        //public void CatchHuman(int positionRow, int positionColumn)
-        //{
-        //    for (int i = 0; i < movementDirections.Length; i++)
-        //    {
-        //        // Gira os 90º graus
-        //        var movement = (positionRow + movementDirections[i].Item1, positionColumn + movementDirections[i].Item2);
-        //        if (Sensor((pathSaved.Last().Item1, pathSaved.Last().Item2), movement))
-        //        {
-        //            DischargeBattery();
-        //            //Log.PegarHumano
-        //            return;
-        //        }
+        public void CatchHuman(int currentRow, int currentColumn, (int, int) humanPosition)
+        {
+            if (_maze.returnStringPosition(humanPosition) != "HUMANO")
+                throw new Exception("Nenhum humano para capturar localizado pelos sensores");
+
+            (int, string)[] indexes;
+
+            string movementCompass = compass;
+            (int, int) sensorFront = (0, 0);
+            (int, int) sensorRight = (0, 0);
+            (int, int) sensorLeft = (0, 0);
+
+            while (!(_maze.returnStringPosition(sensorFront) == "HUMANO"))
+                switch (movementCompass)
+                {
+                    case "north":
+                        // north, west, east
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[0], movementDirections[1], movementDirections[3]);
+
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
+
+                        movementCompass = "east";
+                        actionRobot = "D";
+
+                        break;
+                    case "east":
+                        // east, south, north
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[1], movementDirections[2], movementDirections[0]);
+
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
+
+                        movementCompass = "south";
+                        actionRobot = "D";
+
+                        break;
+                    case "south":
+                        // south, west, east
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[2], movementDirections[3], movementDirections[1]);
+
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
+
+                        movementCompass = "west";
+                        actionRobot = "D";
+
+                        break;
+                    case "west":
+                        // west, north, south
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[3], movementDirections[0], movementDirections[2]);
+
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
+
+                        movementCompass = "north";
+                        actionRobot = "D";
+
+                        break;
+                }
+
+            compass = movementCompass;
+            actionRobot = "P";
+            hasHuman = true;
+
+            DischargeBattery();
+            _maze.ReplaceMaze(sensorFront, ' ');
+        }
 
 
-        //    }
-        //    throw new Exception("Nenhum humano para capturar localizado pelos sensores");
-        //}
+        public void DropHuman(int currentRow, int currentColumn)
+        {
+            (int, string)[] indexes;
 
-        //public void DropHuman(int positionRow, int positionColumn)
-        //{
-        //    for (int i = 0; i < movementDirections.Length; i++)
-        //    {
-        //        // Gira os 90º graus
-        //        var movement = (positionRow + movementDirections[i].Item1, positionColumn + movementDirections[i].Item2);
-        //        if (Sensor((exit.Item1, exit.Item2), movement))
-        //        {
-        //            DischargeBattery();
-        //            //Log.PegarHumano
-        //            return;
-        //        }
-        //    }
-        //    throw new Exception("Caminho de entrada não localizado pelos sensores");
-        //}
+            string movementCompass = compass;
+            (int, int) sensorFront = (0, 0);
+            (int, int) sensorRight = (0, 0);
+            (int, int) sensorLeft = (0, 0);
+
+            while (!(_maze.returnStringPosition(sensorFront) == "SAIDA"))
+                switch (movementCompass)
+                {
+                    case "north":
+                        // north, west, east
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[0], movementDirections[1], movementDirections[3]);
+
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
+
+                        movementCompass = "east";
+                        actionRobot = "D";
+
+                        break;
+                    case "east":
+                        // east, south, north
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[1], movementDirections[2], movementDirections[0]);
+
+
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
+
+                        movementCompass = "south";
+                        actionRobot = "D";
+
+                        break;
+                    case "south":
+                        // south, west, east
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[2], movementDirections[3], movementDirections[1]);
+
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
+
+                        movementCompass = "west";
+                        actionRobot = "D";
+
+                        break;
+                    case "west":
+                        // west, north, south
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[3], movementDirections[0], movementDirections[2]);
+
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
+
+                        movementCompass = "north";
+                        actionRobot = "D";
+
+                        break;
+                }
+
+            compass = movementCompass;
+            actionRobot = "E";
+            hasHuman = false;
+
+            DischargeBattery();
+            _maze.ReplaceMaze(sensorFront, ' ');
+
+            _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
+        }
 
         public void RescueHuman()
         {
@@ -76,20 +185,19 @@
             {
                 if (i == 0) continue;
                 else if (i == pathSaved.Count - 1) break;
-
                 (positionRow, positionColumn) = MoveTo(positionRow, positionColumn, pathSaved[i]);
             }
 
-            //// precisa verificar se o homanu está na frente
-            //CatchHuman(positionRow, positionColumn);
+            //precisa verificar se o homanu está na frente
+            CatchHuman(positionRow, positionColumn, pathSaved.Last());
 
-            //for (int i = pathSaved.Count - 1; i > 0; i--)
-            //{
-            //    (positionRow, positionColumn) = MoveTo(positionRow, positionColumn, pathSaved[i]);
+            for (int i = pathSaved.Count - 1; i > 0; i--)
+            {
+                (positionRow, positionColumn) = MoveTo(positionRow, positionColumn, pathSaved[i]);
 
-            //}
+            }
 
-            //DropHuman(positionRow, positionColumn);
+            DropHuman(positionRow, positionColumn);
         }
 
         public (int, int) MoveTo(int currentRow, int currentColumn, (int, int) localization)
@@ -105,81 +213,91 @@
                 switch (movementCompass)
                 {
                     case "north":
-                        indexes = [(0, "north"), (1, "east"), (3, "west")];
+                        // north, west, east
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[0], movementDirections[1], movementDirections[3]);
 
-                        sensorFront = (currentRow + movementDirections[0].Item1, currentColumn + movementDirections[0].Item2);
-                        sensorRight = (currentRow + movementDirections[1].Item1, currentColumn + movementDirections[1].Item2);
-                        sensorLeft = (currentRow + movementDirections[3].Item1, currentColumn + movementDirections[3].Item2);
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
 
                         if (CheckFrontSensor(localization, sensorFront))
                         {
                             compass = movementCompass;
-                            _log.WriteToCsv('A', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                            actionRobot = "A";
+
                         }
                         else
                         {
                             movementCompass = "east";
-                            _log.WriteToCsv('D', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                            actionRobot = "D";
                         }
                         break;
                     case "east":
-                        indexes = [(1, "east"), (2, "south"), (0, "north")];
-
-                        sensorFront = (currentRow + movementDirections[1].Item1, currentColumn + movementDirections[1].Item2);
-                        sensorRight = (currentRow + movementDirections[2].Item1, currentColumn + movementDirections[2].Item2);
-                        sensorLeft = (currentRow + movementDirections[0].Item1, currentColumn + movementDirections[0].Item2);
+                        // east, south, north
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[1], movementDirections[2], movementDirections[0]);
+                        
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
 
                         if (CheckFrontSensor(localization, sensorFront))
                         {
                             compass = movementCompass;
-                            _log.WriteToCsv('A', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                            actionRobot = "A";
+
                         }
                         else
                         {
                             movementCompass = "south";
-                            _log.WriteToCsv('D', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                            actionRobot = "D";
                         }
                         break;
                     case "south":
-                        indexes = [(2, "south"), (3, "west"), (1, "east")];
+                        // south, west, east
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[2], movementDirections[3], movementDirections[1]);
 
-                        sensorFront = (currentRow + movementDirections[2].Item1, currentColumn + movementDirections[2].Item2);
-                        sensorRight = (currentRow + movementDirections[3].Item1, currentColumn + movementDirections[3].Item2);
-                        sensorLeft = (currentRow + movementDirections[1].Item1, currentColumn + movementDirections[1].Item2);
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
 
                         if (CheckFrontSensor(localization, sensorFront))
                         {
                             compass = movementCompass;
-                            _log.WriteToCsv('A', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                            actionRobot = "A";
+
                         }
                         else
                         {
                             movementCompass = "west";
-                            _log.WriteToCsv('D', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                            actionRobot = "D";
                         }
                         break;
                     case "west":
-                        indexes = [(3, "west"), (0, "north"), (2, "south")];
+                        // west, north, south
+                        (sensorFront, sensorRight, sensorLeft) = CheckSensorsAround(currentRow, currentColumn, movementDirections[3], movementDirections[0], movementDirections[2]);
 
-                        sensorFront = (currentRow + movementDirections[3].Item1, currentColumn + movementDirections[3].Item2);
-                        sensorRight = (currentRow + movementDirections[0].Item1, currentColumn + movementDirections[0].Item2);
-                        sensorLeft = (currentRow + movementDirections[2].Item1, currentColumn + movementDirections[2].Item2);
+                        _log.WriteToCsv(actionRobot, _maze.returnStringPosition(sensorFront),
+                            _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft), hasHuman);
 
                         if (CheckFrontSensor(localization, sensorFront))
                         {
                             compass = movementCompass;
-                            _log.WriteToCsv('A', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                            actionRobot = "A";
+
                         }
                         else
                         {
                             movementCompass = "north";
-                            _log.WriteToCsv('D', _maze.returnStringPosition(sensorFront), _maze.returnStringPosition(sensorRight), _maze.returnStringPosition(sensorLeft));
+                            actionRobot = "D";
                         }
                         break;
                 }
             return sensorFront;
         }
 
+        public ((int, int), (int, int), (int, int)) CheckSensorsAround(int currentRow, int currentColumn, (int, int) movementDirectionsFront, (int, int) movementDirectionsRight, (int, int) movementDirectionsLeft)
+        {
+            return ((currentRow + movementDirectionsFront.Item1, currentColumn + movementDirectionsFront.Item2), 
+                (currentRow + movementDirectionsRight.Item1, currentColumn + movementDirectionsRight.Item2), 
+                (currentRow + movementDirectionsLeft.Item1, currentColumn + movementDirectionsLeft.Item2));
+        }
 
         public bool CheckFrontSensor((int, int) localization, (int, int) movement)
         {
