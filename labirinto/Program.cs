@@ -4,12 +4,13 @@
     {
         static void Main(string[] args)
         {
-            var data = File.ReadAllText("C:\\Users\\sckgu\\OneDrive\\Documentos\\FACULDADE\\Serviços Cognitivos\\ADS 1\\labirinto_servicos_cognitivos\\labirinto\\labirintos\\10x20semerro.txt");
+            var data = File.ReadAllText("C:\\Users\\sckgu\\OneDrive\\Documentos\\FACULDADE\\Serviços Cognitivos\\ADS 1\\labirinto_servicos_cognitivos\\labirinto\\labirintos\\7x7.txt");
 
             Maze maze = new Maze(data);
             Robot robot = new Robot(maze);
 
             robot.SearchHuman();
+            Console.WriteLine(robot.compass);
             foreach (var step in robot.pathSaved)
             {
                 Console.WriteLine($"Posição: ({step.Item1}, {step.Item2})");
