@@ -486,3 +486,5 @@ $RECYCLE.BIN/
 # Ignorar diretórios de build gerados pelo C#
 bin/
 obj/
+
+LogCsv/

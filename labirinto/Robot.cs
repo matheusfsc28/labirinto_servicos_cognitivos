@@ -24,7 +24,7 @@
 
         public Robot(Maze maze) : base(maze)
         {
-            _log = new Log();
+            _log = new Log(maze._mazeName);
             SetOrientation(_maze.entranceRow, _maze.entranceColumn);
         }
 
