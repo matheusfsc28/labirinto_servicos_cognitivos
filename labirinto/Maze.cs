@@ -4,6 +4,8 @@ namespace labirinto
 {
     public class Maze
     {
+        public string _mazeName;
+
         public string mazeTxt;
         public char[,] arrayMaze;
         public int linesLength;
@@ -12,11 +14,15 @@ namespace labirinto
         public int entranceRow;
         public int entranceColumn;
 
+        public int humanRow;
+        public int humanColumn;
 
-        public Maze(string _mazeTxt)
+
+        public Maze(string _mazeTxt, string mazeName)
         {
             mazeTxt = _mazeTxt;
             setArrayMaze();
+            _mazeName = mazeName;
         }
 
         private void setArrayMaze()

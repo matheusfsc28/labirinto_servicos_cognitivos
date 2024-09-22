@@ -4,9 +4,12 @@
     {
         static void Main(string[] args)
         {
-            var data = File.ReadAllText("C:\\Users\\sckgu\\OneDrive\\Documentos\\FACULDADE\\Serviços Cognitivos\\ADS 1\\labirinto_servicos_cognitivos\\labirinto\\labirintos\\trivial.txt");
+            string mazeFilePath = "C:\\Users\\mathe\\OneDrive\\Documentos\\code\\studies\\Faculdade\\servicos_cognitivos\\labirinto_servicos_cognitivos\\labirinto\\labirintos\\trivial.txt";
+            var data = File.ReadAllText(mazeFilePath);
 
-            Maze maze = new Maze(data);
+            string mazeName = Path.GetFileNameWithoutExtension(mazeFilePath);
+
+            Maze maze = new Maze(data, mazeName);
             Robot robot = new Robot(maze);
 
             robot.RescueHuman();
