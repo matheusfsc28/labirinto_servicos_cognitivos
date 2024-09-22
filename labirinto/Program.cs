@@ -4,7 +4,9 @@
     {
         static void Main(string[] args)
         {
-            string mazeFilePath = "C:\\Users\\mathe\\OneDrive\\Documentos\\code\\studies\\Faculdade\\servicos_cognitivos\\labirinto_servicos_cognitivos\\labirinto\\labirintos\\trivial.txt";
+            string projectDirectory = Directory.GetCurrentDirectory();
+            string mazeFilePath = Path.Combine(projectDirectory, "..", "..", "..", "labirintos", "trivial.txt");
+            
             var data = File.ReadAllText(mazeFilePath);
 
             string mazeName = Path.GetFileNameWithoutExtension(mazeFilePath);

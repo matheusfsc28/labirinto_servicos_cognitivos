@@ -28,7 +28,7 @@ namespace labirinto
 
             using (StreamWriter writer = new StreamWriter(_filePath, false, Encoding.UTF8))
             {
-                writer.WriteLine("Comando enviado,Leitura do sensor do lado esquerdo do robô após execução do comando,Leitura do sensor do lado direito do robô após execução do comando,Leitura do sensor do lado direito do robô após execução do comando,Situação do compartimento de carga");
+                writer.WriteLine("Comando enviado,Leitura do sensor do lado esquerdo do robô após execução do comando,Leitura do sensor do lado direito do robô após execução do comando,Leitura do sensor frontal do robô após execução do comando,Situação do compartimento de carga");
             }
         }
 
