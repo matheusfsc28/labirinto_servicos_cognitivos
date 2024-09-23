@@ -28,6 +28,9 @@
             {
                 Console.WriteLine($"Posição: ({step.Item1}, {step.Item2})");
             }
+
+            robot._log.WriteFilePath();
+            robot._log.OpenLogDirectory();
         }
     }
 }
