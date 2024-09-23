@@ -59,7 +59,7 @@
                         if (!(_maze.returnStringPosition(sensorFront) == "HUMANO"))
                         {
                             movementCompass = "east";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
 
                         break;
@@ -73,7 +73,7 @@
                         if (!(_maze.returnStringPosition(sensorFront) == "HUMANO"))
                         {
                             movementCompass = "south";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
 
                         break;
@@ -87,7 +87,7 @@
                         if (!(_maze.returnStringPosition(sensorFront) == "HUMANO"))
                         {
                             movementCompass = "west";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
 
                         break;
@@ -101,7 +101,7 @@
                         if (!(_maze.returnStringPosition(sensorFront) == "HUMANO"))
                         {
                             movementCompass = "north";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
 
                         break;
@@ -138,7 +138,7 @@
                         if (!(_maze.returnStringPosition(sensorFront) == "SAIDA"))
                         {
                             movementCompass = "east";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
 
                         break;
@@ -152,7 +152,7 @@
                         if (!(_maze.returnStringPosition(sensorFront) == "SAIDA"))
                         {
                             movementCompass = "south";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
 
                         break;
@@ -165,7 +165,7 @@
                         if (!(_maze.returnStringPosition(sensorFront) == "SAIDA"))
                         {
                             movementCompass = "west";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
 
                         break;
@@ -179,7 +179,7 @@
                         if (!(_maze.returnStringPosition(sensorFront) == "SAIDA"))
                         {
                             movementCompass = "north";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
                         break;
                 }
@@ -244,7 +244,7 @@
                         else
                         {
                             movementCompass = "east";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
                         break;
                     case "east":
@@ -262,7 +262,7 @@
                         else
                         {
                             movementCompass = "south";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
                         break;
                     case "south":
@@ -280,7 +280,7 @@
                         else
                         {
                             movementCompass = "west";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
                         break;
                     case "west":
@@ -298,7 +298,7 @@
                         else
                         {
                             movementCompass = "north";
-                            actionRobot = "D";
+                            actionRobot = "G";
                         }
                         break;
                 }
