@@ -4,9 +4,18 @@
     {
         static void Main(string[] args)
         {
-            string projectDirectory = Directory.GetCurrentDirectory();
-            string mazeFilePath = Path.Combine(projectDirectory, "..", "..", "..", "labirintos", "trivial.txt");
-            
+            string mazeFilePath = string.Empty;
+
+            while (true)
+            {
+                Console.WriteLine("Por favor, insira o caminho completo do arquivo do labirinto (em .txt e no formato LF, conforme passado no exemplo pelo professor):");
+                mazeFilePath = Console.ReadLine();
+
+                if (File.Exists(mazeFilePath)) break;
+                
+                else Console.WriteLine("Arquivo não encontrado. Tente novamente. \n");
+            }
+
             var data = File.ReadAllText(mazeFilePath);
 
             string mazeName = Path.GetFileNameWithoutExtension(mazeFilePath);

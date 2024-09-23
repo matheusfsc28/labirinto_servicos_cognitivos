@@ -17,7 +17,7 @@
             searched = new bool[_maze.linesLength, _maze.columnLength];
 
             return MakeSearch(_maze.entranceRow, _maze.entranceColumn);
-                
+
         }
 
         private bool MakeSearch(int vertical, int horizontal)

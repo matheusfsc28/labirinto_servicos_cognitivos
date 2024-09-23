@@ -30,7 +30,7 @@ namespace labirinto
             string[] lines = mazeTxt.Split('\n');
 
             foreach (string line in lines)
-            { 
+            {
                 if (line.Length == 0 || line.Length < columnLength) continue;
 
                 if (linesLength == 0)
@@ -59,14 +59,14 @@ namespace labirinto
             }
         }
 
-        public string returnStringPosition((int,int) position)
+        public string returnStringPosition((int, int) position)
         {
             int linePosition = position.Item1;
             int columnPosition = position.Item2;
 
 
             if (linePosition < 0 || linePosition >= linesLength || columnPosition < 0 || columnPosition >= columnLength)
-                    return ("Posicao fora do labirinto");
+                return ("Posicao fora do labirinto");
 
             switch (arrayMaze[linePosition, columnPosition])
             {
@@ -82,7 +82,7 @@ namespace labirinto
                     return "ERROR";
             }
         }
-        
+
         public void ReplaceMaze((int, int) position, char character)
         {
             arrayMaze[position.Item1, position.Item2] = character;

@@ -36,6 +36,8 @@
 
         public void CatchHuman(int currentRow, int currentColumn, (int, int) humanPosition)
         {
+            if (battery <= 0)
+                throw new Exception("Bateria insuficiente para realizar ação");
             if (_maze.returnStringPosition(humanPosition) != "HUMANO")
                 throw new Exception("Nenhum humano para capturar localizado pelos sensores");
 
@@ -116,6 +118,9 @@
 
         public void DropHuman(int currentRow, int currentColumn)
         {
+            if (battery <= 0)
+                throw new Exception("Bateria insuficiente para realizar ação");
+
             string movementCompass = compass;
             (int, int) sensorFront = (0, 0);
             (int, int) sensorRight = (0, 0);
