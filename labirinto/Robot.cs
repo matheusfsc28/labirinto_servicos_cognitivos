@@ -2,7 +2,7 @@
 {
     public class Robot : Radar
     {
-        Log _log;
+        public Log _log;
 
         public int battery = 2;
         public (int, int)[] movementDirections = new (int, int)[]
