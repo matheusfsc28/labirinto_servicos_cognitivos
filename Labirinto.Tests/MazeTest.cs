@@ -8,7 +8,7 @@ namespace labirinto.Tests
         public void SetArrayMaze_ShouldCorrectlyConfigureArrayMaze()
         {
             string mazeTxt = "****\n*E *\n****";
-            Maze maze = new Maze(mazeTxt);
+            Maze maze = new Maze(mazeTxt, "");
 
             char[,] expectedArrayMaze = new char[,]
             {

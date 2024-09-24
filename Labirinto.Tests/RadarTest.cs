@@ -17,7 +17,7 @@ namespace labirinto.Tests
                 "* ***H*\n" +
                 "*******";
 
-            Maze maze = new Maze(mazeData);
+            Maze maze = new Maze(mazeData, "");
             Radar radar = new Radar(maze);
 
             bool found = radar.SearchHuman();
@@ -38,7 +38,7 @@ namespace labirinto.Tests
                 "* *** *\n" +
                 "*******";
 
-            Maze maze = new Maze(mazeData);
+            Maze maze = new Maze(mazeData, "");
             Radar radar = new Radar(maze);
 
             bool found = radar.SearchHuman();
@@ -59,7 +59,7 @@ namespace labirinto.Tests
                 "* ***H*\n" +
                 "*******";
 
-            Maze maze = new Maze(mazeData);
+            Maze maze = new Maze(mazeData, "");
             Radar radar = new Radar(maze);
 
             radar.SearchHuman();
